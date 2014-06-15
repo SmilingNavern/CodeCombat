@@ -50,6 +50,7 @@ var librarian = this.findTypeInRange(enemies, 'librarian');
 var knight = this.findTypeInRange(enemies, 'knight');
 var archer = this.findTypeInRange(all_archers, 'archer');
 var archer_count = this.enemyCount(all_archers, 'archer');
+var time_to_wait = 10;
 
 if (archer_count > 2) {
     enemy = this.getNearest(all_archers);
@@ -60,7 +61,7 @@ if (archer_count > 2) {
 } 
 
 // Which one do you do at any given time? Only the last called action happens.
-if(!this.getCooldown('jump') && (enemy.type == 'archer' || enemy.type == 'librarian')) {
+if(!this.getCooldown('jump')) {
     this.jumpTo(enemy.pos);
 } else if(!this.getCooldown('stomp') && this.distance(enemy) < 10) {
     this.stomp();
@@ -69,20 +70,19 @@ if(!this.getCooldown('jump') && (enemy.type == 'archer' || enemy.type == 'librar
 } else if(enemy.type == 'archer') {
     this.attack(enemy);
 } else {
-    this.attack(enemy) && this.say("Attack," + enemy.id + "!", {target: enemy});
+    this.say("Attack," + enemy.id + "!", {target: enemy}) && this.attack(enemy);
 }
 
 // You can also command your troops with this.say():
 //
 //this.say("Move!", {targetPos: {x: 50, y: 40});
-
-// You can store state on this across frames:
-//this.lastHealth = this.health;
-if ( this.now() < 10) {
-
-    if (this.distance(this.getNearest(enemies)) > 8) {
-        this.move(base_coords) && this.say("Defend!", {targetPos: {x : 74, y : 38}});
-    } else if (this.distance(this.getNearest(enemies)) < 9) {
-        this.attack(enemy) && this.say("Attack," + enemy.id + "!", {target: enemy});
-    }
+if ((this.now() < time_to_wait) && this.distance(this.getNearest(enemies)) > 8) {
+    this.move(base_coords) && this.say("Defend!", {targetPos: {x : 74, y : 38}});
+    this.saidAttackAlready = 0;
+} else if ((this.now() < time_to_wait) && this.distance(this.getNearest(enemies)) < 9) {
+    this.attack(enemy) && this.say("Attack," + enemy.id + "!", {target: enemy});
+    this.saidAttackAlready = 1;
+} else if (!this.saidAttackAlready) {
+    this.say("Attack," + enemy.id + "!", {target: enemy});
+    this.saidAttackAlready = 1;
 }
