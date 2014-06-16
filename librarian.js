@@ -68,6 +68,8 @@ if (shaman) {
     enemy = brawler;
 }
 
+
+
 // Which one do you do at any given time? Only the last called action happens.
 if(this.canCast('slow', enemy) && enemy.type == 'brawler') {
     this.castSlow(enemy);
