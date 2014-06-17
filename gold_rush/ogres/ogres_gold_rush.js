@@ -55,7 +55,6 @@ this.getCalculatedValue = function(all_items, the_enemy) {
 
 var enemy = this.getNearestEnemy();
 var items = this.getItems();
-//var items_nearby = this.getItemsByDistance(items, 2);
 var items_price = this.getCalculatedValue(items,enemy);
 var best_item = this.getBestValue(items,items_price);
 var next_move;
@@ -70,7 +69,7 @@ if (best_item) {
     next_move = {x : (this.pos.x + random_move), y : (this.pos.y + random_move)};
 }
 
-if (!this.getCooldown("jump") && best_item) {
+if (!this.getCooldown("jump") && best_item && best_item.type == 'gem') {
     this.jumpTo(next_move);
 } else {
     this.move(next_move);
