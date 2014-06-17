@@ -46,7 +46,7 @@ this.getCalculatedValue = function(all_items, the_enemy) {
 
     for(var i = 0; i < all_items.length; ++i) {
         var item = all_items[i];
-        var item_value = (item.bountyGold * 5) - this.getDistanceTo(item.pos.x, item.pos.y) * 2 + this.getDistanceBetween(item.pos.x, item.pos.y, the_enemy.pos.x, the_enemy.pos.y) / 3;
+        var item_value = (item.bountyGold * 5) - this.getDistanceTo(item.pos.x, item.pos.y) * 2 + this.getDistanceBetween(item.pos.x, item.pos.y, the_enemy.pos.x, the_enemy.pos.y) / 4;
         item_to_value[i] = item_value;
     }
 
